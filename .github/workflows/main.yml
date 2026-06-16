@@ -7,20 +7,20 @@ on:
     branches: [main]
 
 jobs:
-  # Step 1: Run lint + tests via reusable CI workflow
+  
   ci:
     uses: ./.github/workflows/reusable-ci.yml
     with:
       python-version: '3.11'
 
-  # Step 2: Build Docker image (no push on PRs)
+  
   docker-build:
-    needs: ci                          # only runs if CI passes
+    needs: ci                          
     uses: ./.github/workflows/reusable-docker.yml
     with:
       image-name: ${{ github.repository }}
       tag: ${{ github.sha }}
-      push: ${{ github.ref == 'refs/heads/main' }}   # push only on main
+      push: ${{ github.ref == 'refs/heads/main' }}  
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
